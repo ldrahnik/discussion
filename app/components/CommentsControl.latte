@@ -1,0 +1,17 @@
+{snippet comments}
+  <ul>
+    {foreach $comments as $comment}
+      <li>
+			<span class="author">
+          {$comment->author}
+			</span>
+
+        {!$comment->text|escape|nl2br}
+
+        <a n:href="delete!, $comment->dbId">smazat</a>
+      </li>
+    {/foreach}
+  </ul>
+{/snippet}
+
+{control addCommentForm}

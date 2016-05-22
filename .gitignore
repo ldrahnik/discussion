@@ -1,0 +1,6 @@
+app/config/config.local.neon
+composer.lock
+bower_components
+temp/**/*
+log/**/*
+vendor/
