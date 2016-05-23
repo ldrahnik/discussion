@@ -22,3 +22,4 @@ services:
 extensions:
     autowired: Kdyby\Autowired\DI\AutowiredExtension
     dibi: Dibi\Bridges\Nette\DibiExtension22
+    deaw: Kappa\Deaw\DI\DeawExtension
