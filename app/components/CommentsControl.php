@@ -22,8 +22,14 @@ class CommentsControl extends Control {
   /** @var callable[] function ($commentId); Occurs when the user wants delete the comment */
   public $onDeleteComment = [];
 
+  /** @var callable[] function ($commentId); Occurs when the user wants delete the comment but exception was thrown */
+  public $onDeleteCommentError = [];
+
   /** @var callable[] function ('text', 'author')); Occurs when the user wants insert new comment */
   public $onAddComment = [];
+
+  /** @var callable[] function (); Occurs when the user wants add the comment but exception was thrown */
+  public $onAddCommentError = [];
 
   /** @var Row[] */
   private $comments;
@@ -56,20 +62,22 @@ class CommentsControl extends Control {
    * @return void
    */
   public function handleDelete($commentId) {
-    $this->commentsService->delete($commentId);
-
-    $this->redirect('this');
-
-    $this->onDeleteComment($commentId);
+    try {
+      $this->commentsService->delete($commentId);
+      $this->onDeleteComment($commentId);
+    } catch (\Exception $exception){
+      $this->onDeleteCommentError();
+    }
   }
 
   public function createComponentAddCommentForm() {
     $form = new AddCommentForm($this->commentsService);
 
     $form->onAddComment[] = function($values) {
-      $this->redirect('this');
-
       $this->onAddComment($values);
+    };
+    $form->onAddCommentError[] = function() {
+      $this->onAddCommentError();
     };
 
     return $form;
